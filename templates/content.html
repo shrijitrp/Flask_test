@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %} User Information {% endblock %}
+
+{% block content %}
+
+    <p1> {{Track}} by </p1>
+    <p1> {{Artist}} :</p1>
+    <p1> {{Uri}} </br>
+    <p1></br>
+    <p1></br>
+    <p1></br>
+    <p1> Content Based Recommendation </br>
+     {% for x in Recommendation %} 
+         <p1>{{x}}</br>
+     {% endfor %}       
+{% endblock content %}
