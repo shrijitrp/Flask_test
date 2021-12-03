@@ -1,0 +1,9 @@
+@app.route("/<email>",methods = ["POST","GET"])
+def info(email):
+    if request.method =="POST":
+        name = request.form["name"]
+        artist = request.form.getlist("artist")
+        genres = request.form.getlist("genre")
+        return redirect(url_for("login"))
+    else:
+        return render_template("info.html")
