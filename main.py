@@ -56,7 +56,7 @@ def login():
             print("Success")
             return redirect(url_for("search"))
         else: 
-                return redirect(url_for("info"))        
+            return redirect(url_for("info"))        
     else:
         return render_template("login.html")
 
@@ -88,20 +88,18 @@ def info():
 @app.route("/search",methods=["POST","GET"])
 def search():
     if request.method == "POST":
-        song = request.form["search"] 
+        song = request.form["song"] 
         return redirect(url_for("content",song = song))
     else:
         print(session["artist"])
         return render_template("search.html", temp = get_artist_songs(session["artist"]))
              
 
-@app.route("/<song>", methods=["POST","GET"])
+@app.route("/<song>", methods=['GET', 'POST'])
 def content(song):  
-    
     found = list(database[database["Tracks"] == song]["uri"])[0]
     recommendation = []
     recommendation = get_recommendations(song)
-    
     if recommendation:
 
         print("ABC")
@@ -117,7 +115,6 @@ content_similarity = cosine_similarity(content_input)
 content_similarity_df = pd.DataFrame(content_similarity,index = content_input.index,columns = content_input.index)
 
 def get_recommendations(song):
-    print("ABC123")
     id = database[database["Tracks"]== song].index.values[0]
     temp = content_similarity_df[id].sort_values(ascending = False).index.values[1:19]
     per = []
