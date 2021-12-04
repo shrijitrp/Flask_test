@@ -54,7 +54,7 @@ def login():
         #password = request.form["password"]
         if user_info["Email"].str.contains(email).any():# & user_info["Password"].str.contains(password).any():
             print("Success")
-            return redirect(url_for("search"))
+            return redirect(url_for("profile"))
         else: 
             return redirect(url_for("info"))        
     else:
@@ -80,34 +80,54 @@ def info():
             # user_info.append(row, ignore_index=True)
             # user_info.to_csv("D:/Capstone/Flask_test/dataset/user_info.csv", index=False)
         csvFile.close()
-        return redirect(url_for("search"))
+        return redirect(url_for("profile"))
     else:
         return render_template("info.html")
 
 
-@app.route("/search",methods=["POST","GET"])
-def search():
+# @app.route("/search",methods=["POST","GET"])
+# def search():
+#     if request.method == "POST":
+#         song = request.form["song"] 
+#         #session['Song'] = song
+#         print("ERRORONUS: ", song)
+#         return redirect(url_for("content",song = song))
+#     else:
+#         #print("TESTINGTON: ", session['Song'])
+#         print("TESTER", session["artist"])
+#         return render_template("search.html", temp = get_artist_songs(session["artist"]))
+             
+@app.route("/profile",methods=["POST","GET"])
+def profile():
     if request.method == "POST":
         song = request.form["song"] 
+        #session['Song'] = song
+        print("PROFILEERRORCHECK: ", song)
         return redirect(url_for("content",song = song))
     else:
-        print(session["artist"])
-        return render_template("search.html", temp = get_artist_songs(session["artist"]))
-             
+        #print("TESTINGTON: ", session['Song'])
+        print("PRFILETESTER", session["artist"])
+        return render_template("profile.html", temp = get_artist_songs(session["artist"]))
 
 @app.route("/<song>", methods=['GET', 'POST'])
 def content(song):  
-    found = list(database[database["Tracks"] == song]["uri"])[0]
     recommendation = []
+    #if song != session['Song']:
+    found = list(database[database["Tracks"] == song]["uri"])[0]
     recommendation = get_recommendations(song)
+    #else: 
+        #song = session['Song']
+    #found = list(database[database["Tracks"] == song]["uri"])[0]
+    #recommendation = get_recommendations(song
     if recommendation:
-
-        print("ABC")
-        return render_template("content.html",Recommendation = recommendation, found = found)#,Track = track,Artist = artist,Uri = uri,Recommendation = recommendation)    
+        #session.pop(song,None)
+        print("ABC: ", session['Song'])
+        returnValue = render_template("content.html",Recommendation = recommendation, found = found)#,Track = track,Artist = artist,Uri = uri,Recommendation = recommendation)    
     else:
         print("ERRORONUS")
-        return redirect(url_for("search"))
-    
+        returnValue = redirect(url_for("search"))
+    song = None
+    return returnValue
   
 content_input = database.drop(["Artist","Tracks","uri","Genres","duration_ms"],axis = 1)
 content_input[content_input.columns[content_input.dtypes == "float64"].values] = sc.fit_transform(content_input[content_input.columns[content_input.dtypes == "float64"].values])   
