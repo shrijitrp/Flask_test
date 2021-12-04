@@ -1,8 +1,10 @@
-from flask import Flask, render_template, redirect, request, session, make_response,session,url_for
+from flask import Flask, render_template, redirect, request, session, make_response,session,url_for, jsonify
 import spotipy
 import spotipy.util as util
 import time
+import xlwt
 import json
+import csv
 #from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
 import numpy as np
@@ -48,8 +50,10 @@ def login():
     #error = None
     if request.method == "POST":
         email = request.form["Email"]
+        session["email"] = email
         #password = request.form["password"]
         if user_info["Email"].str.contains(email).any():# & user_info["Password"].str.contains(password).any():
+            print("Success")
             return redirect(url_for("search"))
         else: 
                 return redirect(url_for("info"))        
@@ -63,7 +67,18 @@ def info():
         artist = request.form.getlist("artist")
         genre = request.form["genre"]
         session["artist"] = artist
+        session["genre"] = genre
+        email = session["email"]
         #session["genre"] = genre
+        row = [name,email,genre,artist]
+        #row = {"name":name,"email":email,"genres":genre,"artist":artist}
+        with open("D:/Capstone/Flask_test/dataset/user_info.csv", "a") as csvFile:
+            writer = csv.writer(csvFile)
+            #csvFile.write("\n")
+            writer.writerow(row)
+            # user_info.append(row, ignore_index=True)
+            # user_info.to_csv("D:/Capstone/Flask_test/dataset/user_info.csv", index=False)
+        csvFile.close()
         return redirect(url_for("search"))
     else:
         return render_template("info.html")
@@ -77,24 +92,21 @@ def search():
         # print(session["artist"])
         return redirect(url_for("content",song = song))
     else:
-        if session["artist"]:
-            print(session["artist"])
-            return render_template("search.html", temp = get_artist_songs(session["artist"]))
-        else:
-            return render_template("search1.html")
+        print(session["artist"])
+        return render_template("search.html", temp = get_artist_songs(session["artist"]))
              
 
-@app.route("/<song>")
-def content(song): 
-    #found = database[database['Tracks'].str.match(song)] 
-    recommendation = get_recommendations(song)    
+@app.route("/<song>", methods=['GET', 'POST'])
+def content(song):  
+    found = list(database[database["Tracks"] == song]["uri"])[0]
+    recommendation = []
+    recommendation = get_recommendations(song, found)
     if recommendation:
-        #uri = list(found["uri"])
-        #track = list(found["Tracks"])
-        #artist = list(found["Artist"])
-        return render_template("content.html",Recommendation = recommendation)#,Track = track,Artist = artist,Uri = uri,Recommendation = recommendation)    
+
+        print("ABC")
+        return render_template("content.html",Recommendation = recommendation, found = found)#,Track = track,Artist = artist,Uri = uri,Recommendation = recommendation)    
     else:
-        print("ololol")
+        print("ERRORONUS")
         return redirect(url_for("search"))
     
 
@@ -106,23 +118,21 @@ content_input[content_input.columns[content_input.dtypes == "float64"].values] =
 content_similarity = cosine_similarity(content_input)
 content_similarity_df = pd.DataFrame(content_similarity,index = content_input.index,columns = content_input.index)
 
-def get_recommendations(song):
+def get_recommendations(song, found):
     id = database[database["Tracks"]== song].index.values[0]
     temp = content_similarity_df[id].sort_values(ascending = False).index.values[1:19]
-    x = list(database.iloc[temp]["Tracks"])
-    y = list(database.iloc[temp]["Artist"])
+    per = []
+    for y in temp:
+        x = content_similarity_df.at[y,id]
+        per.append(str(x * 100))
     link = list(database.iloc[temp]["uri"])
     #recommendation = set([i +" by " + j + " : " +  k for i,j,k in zip(x,y,z)])
-    return link
+    return zip(link, per)
 
 def get_artist_songs(artist):
-    recommendation = []
     link = []
     for name in artist:
-        x = (database[(database['Artist'] == name)].sample(n = 2))["Tracks"]
-        y = (database[(database['Artist'] == name)].sample(n = 2))["Artist"]
-        z = (database[(database['Artist'] == name)].sample(n = 2))["uri"]   
-        recommendation.append(([i +" by " + j + " - " +  k for i,j,k in zip(x,y,z)]))
+        z = (database[(database['Artist'] == name)].sample(n = 3))["uri"]   
         link.append("https://open.spotify.com/embed/track/" + z)
     return link
     
