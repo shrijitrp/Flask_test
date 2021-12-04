@@ -1,12 +1,24 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 {% block title %} Search {% endblock %}
 
 {% block content %}
+<p1></p1>
+<center> Based on Artist </center>
+<p1></p1>
+<div class="container">
+    <div class="row row-cols-2">
+     {% for x in temp %}
+         {% for y in x %}
+         {% print("ROFL") %} 
+         <div class="col-sm">
+             <center>
+                <iframe class="widget" src={{ y }} width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media">test</iframe></center>
+                </hr></br>
+            </div>
+        {% endfor %}    
+     {% endfor %} 
 
-<form action="#" method= "POST">
-    <p> Search a song :</p>
-    <p><input type = "text" name = "search"/></p>
-    <p><input type = "submit" value = "search"/></p>    
-</form>
-
+    </div>
+</div>
+     
 {% endblock content %}

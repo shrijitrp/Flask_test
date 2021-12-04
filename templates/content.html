@@ -1,16 +1,21 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 {% block title %} User Information {% endblock %}
 
 {% block content %}
 
-    <p1> {{Track}} by </p1>
-    <p1> {{Artist}} :</p1>
-    <p1> {{Uri}} </br>
-    <p1></br>
-    <p1></br>
-    <p1></br>
-    <p1> Content Based Recommendation </br>
-     {% for x in Recommendation %} 
-         <p1>{{x}}</br>
-     {% endfor %}       
+
+
+    <center><h1> Content Based Recommendation</h1> </center>
+    
+    <div class="container">
+        <div class="row row-cols-2">
+     {% for x in Recommendation %}
+
+     <div class="col-sm">
+            <iframe src={{ "https://open.spotify.com/embed/track/" + x }} width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media">test</iframe>
+             
+    </div>
+     {% endfor %}  
+    </div>
+</div>
 {% endblock content %}
