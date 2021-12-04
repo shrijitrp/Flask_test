@@ -65,12 +65,13 @@ def info():
     if request.method == "POST":
         name = request.form["name"]
         artist = request.form.getlist("artist")
-        genre = request.form["genre"]
+        genre = request.form.getlist("genre")
         session["artist"] = artist
         session["genre"] = genre
         email = session["email"]
+        gender = request.form["gender"]
         #session["genre"] = genre
-        row = [name,email,genre,artist]
+        row = [name,email,genre,artist,gender]
         #row = {"name":name,"email":email,"genres":genre,"artist":artist}
         with open("D:/Capstone/Flask_test/dataset/user_info.csv", "a") as csvFile:
             writer = csv.writer(csvFile)
@@ -88,19 +89,19 @@ def info():
 def search():
     if request.method == "POST":
         song = request.form["search"] 
-        # print("WORKING")
-        # print(session["artist"])
         return redirect(url_for("content",song = song))
     else:
         print(session["artist"])
         return render_template("search.html", temp = get_artist_songs(session["artist"]))
              
 
-@app.route("/<song>", methods=['GET', 'POST'])
+@app.route("/<song>", methods=["POST","GET"])
 def content(song):  
+    
     found = list(database[database["Tracks"] == song]["uri"])[0]
     recommendation = []
-    recommendation = get_recommendations(song, found)
+    recommendation = get_recommendations(song)
+    
     if recommendation:
 
         print("ABC")
@@ -109,16 +110,14 @@ def content(song):
         print("ERRORONUS")
         return redirect(url_for("search"))
     
-
-
-
   
 content_input = database.drop(["Artist","Tracks","uri","Genres","duration_ms"],axis = 1)
 content_input[content_input.columns[content_input.dtypes == "float64"].values] = sc.fit_transform(content_input[content_input.columns[content_input.dtypes == "float64"].values])   
 content_similarity = cosine_similarity(content_input)
 content_similarity_df = pd.DataFrame(content_similarity,index = content_input.index,columns = content_input.index)
 
-def get_recommendations(song, found):
+def get_recommendations(song):
+    print("ABC123")
     id = database[database["Tracks"]== song].index.values[0]
     temp = content_similarity_df[id].sort_values(ascending = False).index.values[1:19]
     per = []
@@ -135,6 +134,6 @@ def get_artist_songs(artist):
         z = (database[(database['Artist'] == name)].sample(n = 3))["uri"]   
         link.append("https://open.spotify.com/embed/track/" + z)
     return link
-    
+
 if __name__ == "__main__":
     app.run(debug = True) 

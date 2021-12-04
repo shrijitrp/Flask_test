@@ -1,0 +1,11 @@
+Name,Email,Genres,Artist,Gender
+Shrijit,shrijitpendse@gmail.com,"['sds', 'dsdsd', 'dsd']","['The Weeknd', 'Post Malone']",Male
+Ariel,xyz@gmail.com,"['sdf', 'fdffd', 'dwewe']","['Martin Garrix', 'Avicii']",Female
+Team,unknown@known.com,dance_pop,"['The Weeknd', 'Taylor Swift', 'BTS']",Male
+,,,,
+Other,unknown@known.com,edm,"['BTS', 'Kanye West', 'Ozuna', 'XXXTENTACION']",Other
+Tune,tune@ai.com,dance_pop,"['The Weeknd', 'Post Malone', 'Justin Bieber']",Other
+,,,,
+Team,tune@ai.com,"['dance_pop', 'edm', 'dutch_edm']","['Eminem', 'Taylor Swift', 'J Balvin']",Male
+Tester,123@test.com,"['dance_pop', 'edm']","['The Weeknd', 'Post Malone']",Male
+,new@login.com,['90s'],"['Rihanna', 'Travis Scott']",Female
