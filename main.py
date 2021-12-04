@@ -70,6 +70,7 @@ def info():
         session["genre"] = genre
         email = session["email"]
         gender = request.form["gender"]
+        #favourite = 
         #session["genre"] = genre
         row = [name,email,genre,artist,gender]
         #row = {"name":name,"email":email,"genres":genre,"artist":artist}
@@ -84,6 +85,25 @@ def info():
     else:
         return render_template("info.html")
 
+# @app.route("/favourite")
+# def favourite(URI):
+#     print("loaded")
+#     #temp2 = session[email]
+#     #list_of_str = ['Name', 'Email', 'Genres', 'Artist', 'Gender', 'Favourite']
+#     temp = user_info[user_info["Email"] == session["email"]].index.values[0]
+#     returnValue = []
+#     row = []
+#     with open("D:/Capstone/Flask_test/dataset/user_info.csv", "a") as csvFile:
+#         writer = csv.writer(csvFile)
+#         writer[temp][5] = URI
+#         print(writer)
+#         #csvFile.write("\n")
+#         writer.writerow(writer)
+#         returnValue = True
+#         # user_info.append(row, ignore_index=True)
+#         # user_info.to_csv("D:/Capstone/Flask_test/dataset/user_info.csv", index=False)
+#     csvFile.close()
+#     return returnValue
 
 # @app.route("/search",methods=["POST","GET"])
 # def search():
@@ -149,8 +169,28 @@ def get_artist_songs(artist):
     link = []
     for name in artist:
         z = (database[(database['Artist'] == name)].sample(n = 3))["uri"]   
-        link.append("https://open.spotify.com/embed/track/" + z)
+        link.append(z)
     return link
+
+def favourite(URI):
+    print("loaded")
+    #temp2 = session[email]
+    #list_of_str = ['Name', 'Email', 'Genres', 'Artist', 'Gender', 'Favourite']
+    temp = user_info[user_info["Email"] == session["email"]].index.values[0]
+    returnValue = []
+    row = []
+    with open("D:/Capstone/Flask_test/dataset/user_info.csv", "a") as csvFile:
+        writer = csv.writer(csvFile)
+        writer[temp][5] = URI
+        print(writer)
+        #csvFile.write("\n")
+        writer.writerow(writer)
+        returnValue = True
+        # user_info.append(row, ignore_index=True)
+        # user_info.to_csv("D:/Capstone/Flask_test/dataset/user_info.csv", index=False)
+    csvFile.close()
+    return returnValue
+
 
 if __name__ == "__main__":
     app.run(debug = True) 

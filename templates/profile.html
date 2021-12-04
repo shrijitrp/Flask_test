@@ -9,12 +9,17 @@
     <div class="row row-cols-2">
      {% for x in temp %}
          {% for y in x %}
-         {% print("ROFL") %} 
+         
          <div class="col-sm">
-             <center>
-                <iframe class="widget" src={{ y }} width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media">test</iframe></center>
-                </hr></br>
-            </div>
+            <div class="card" style="border: 2px solid #07bc4c"></div>
+             
+            <center>
+                <iframe class="widget" src={{ "https://open.spotify.com/embed/track/" + y }} width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media">test</iframe></center>
+                <div class="container">
+                    <center><label for="id-of-input" class="custom-checkbox">
+                        <button class="btn btn-outline-success" name="favourite" value={{x}}>Favourite</button>    
+                    </label></center>
+            </div> </div>
         {% endfor %}    
      {% endfor %} 
 
