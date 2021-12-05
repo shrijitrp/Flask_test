@@ -7,7 +7,6 @@ Other,unknown@known.com,edm,"['BTS', 'Kanye West', 'Ozuna', 'XXXTENTACION']",Oth
 Team,tune@ai.com,"['dance_pop', 'edm', 'dutch_edm']","['Eminem', 'Taylor Swift', 'J Balvin']",Male,
 Tester,123@test.com,"['dance_pop', 'edm']","['The Weeknd', 'Post Malone']",Male,
 CA,new@login.com,['dance_pop'],['Taylor Swift'],[],
-,,,,,
 CACACA,New@new.com,"['dance_pop', 'edm']","['The Weeknd', 'Post Malone']",Male,
-,,,,,
 DEF,diff@diff.com,['metal'],"['The Weeknd', 'Eminem', 'Juice WRLD']",Male,
+hi,was@benn.com,"['pop', 'metal']","['Justin Bieber', 'Eminem', 'Kanye West']",Male

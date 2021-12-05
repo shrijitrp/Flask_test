@@ -3,16 +3,14 @@
 
 {% block content %}
 
-<form action= "#" method = "post">
+<form class="form-check" action="#" method="post">
     
     <p> Enter Name:</p>
     <p><input type="text" name="name" value="{{ session['name']}}"/></p>  
     
-    
     <input type="radio" name="gender" value='Male'> Male <br/>
     <input type="radio" name="gender" value='Female'> Female <br/>
     <input type="radio" name="gender" value='Other'> Other <br/>
-
 
     <p> Enter Favorite Artist </p>
     <input type="checkbox" name="artist" value='The Weeknd'> The Weeknd <br/>
@@ -40,14 +38,6 @@
     <input type="checkbox" name="genre" value='90s'> 90s  <br/>
     <input type="submit" value="Submit">
     
-    <p> Mood </p>
-
-    <input type="checkbox" name="mood", value="energetic">Energetic</br>
-    <input type="checkbox" name="mood", value="calm">Calm</br>
-    <input type="checkbox" name="mood", value="happy">Happy</br>
-    <input type="checkbox" name="mood", value="sad">Sad</br>
-    <input type="submit" value="Submit">
-        
 </form>
    
 {% endblock content %}

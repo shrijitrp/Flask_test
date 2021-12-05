@@ -11,6 +11,9 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics.pairwise import cosine_similarity
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
+import re   
+  
+regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'  
 sc = StandardScaler()  
 
 
@@ -48,16 +51,22 @@ def index():
 
 @app.route("/login",methods=["POST","GET"])
 def login():
-    #error = None
+    #error = check(request.form["Email"])
     if request.method == "POST":
         email = request.form["Email"]
-        session["email"] = email
+        error = check(email)
         #password = request.form["password"]
         if user_info["Email"].str.contains(email).any():# & user_info["Password"].str.contains(password).any():
+            session["email"] = email
             print("Successful Login")
             return redirect(url_for("profile"))
-        else: 
-            return redirect(url_for("info"))        
+        elif error == True: 
+            print("ASDWSDW")
+            session["email"] = email
+            return redirect(url_for("info")) 
+        else:
+            print("ERROR REPORT")
+            return render_template("login.html")       
     else:
         return render_template("login.html")
 
@@ -89,7 +98,7 @@ def info():
 @app.route("/mood",methods = ["POST","GET"])
 def mood():
     if request.method == "POST":
-        mood = request.form.getlist("mood")
+        mood = request.form.getlist("mood imgbackground")
         for i in mood:
             uri = get_mood(i, database)
         print("MOOOOOOOOOOD",uri)
@@ -98,6 +107,17 @@ def mood():
         returnValue = render_template("mood.html")
     return returnValue
 
+@app.route("/song-search",methods = ["POST","GET"])
+def song_search():
+    if request.method == "POST":
+        songRequest = request.form["search"]  
+        print("SEARCHSOOOONG", songRequest)   
+        returnValue = redirect(url_for("content",song = songRequest))
+    else:
+        print("KSLMDALSDMLASD") 
+        returnValue = render_template("song-search.html")
+    return returnValue
+    
 # @app.route("/favourite")
 # def favourite(URI):
 #     print("loaded")
@@ -236,7 +256,13 @@ def get_mood(y,x):
     #x = list(x["uri"])
     return x    
 
-
+def check(email):   
+    if(re.search(regex,email)):   
+        print("Valid Email")   
+        return True
+    else:   
+        print("Invalid Email")  
+        return False
 
 if __name__ == "__main__":
     app.run(debug = True) 
