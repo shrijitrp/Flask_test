@@ -1,21 +1,24 @@
-{% extends "base.html"%}
+{% extends "index.html"%}
 {% block title %} User Info {% endblock %}
 
 {% block content %}
 
-<form action= "#" method = "post">
+<form class="form-check" action="#" method="post">
     
     <p> Enter Name:</p>
-    <p><input type = "text" name = "name"/></p>  
+    <p><input type="text" name="name" value="{{ session['name']}}"/></p>  
     
-    
-    <p> Enter Favorite Genre </p>
+    <input type="radio" name="gender" value='Male'> Male <br/>
+    <input type="radio" name="gender" value='Female'> Female <br/>
+    <input type="radio" name="gender" value='Other'> Other <br/>
+
+    <p> Enter Favorite Artist </p>
     <input type="checkbox" name="artist" value='The Weeknd'> The Weeknd <br/>
     <input type="checkbox" name="artist" value='Post Malone'> Post Malone <br/>
     <input type="checkbox" name="artist" value='Justin Bieber'> Justin Bieber <br/>
     <input type="checkbox" name="artist" value='Eminem'> Eminem <br/>
     <input type="checkbox" name="artist" value='Taylor Swift'> Taylor Swift <br/>
-    <input type="checkbox" name="artist" value='The WeekndJ Balvin'> J Balvin <br/>
+    <input type="checkbox" name="artist" value='J Balvin'> J Balvin <br/>
     <input type="checkbox" name="artist" value='BTS'> BTS <br/>
     <input type="checkbox" name="artist" value='Kanye West'> Kanye West <br/>
     <input type="checkbox" name="artist" value='Ozuna'> Ozuna <br/>
@@ -25,7 +28,7 @@
     <input type="checkbox" name="artist" value='Rihanna'> Rihanna <br/>
     <input type="checkbox" name="artist" value='Travis Scott'> Travis Scott <br/>
     <p></p>
-    <p> Enter favorite Artist </p>
+    <p> Enter favorite Genre </p>
     <input type="checkbox" name="genre" value='dance_pop'> dance_pop  <br/>
     <input type="checkbox" name="genre" value='edm'>  edm <br/>
     <input type="checkbox" name="genre" value='dutch_edm'> dutch_edm  <br/>

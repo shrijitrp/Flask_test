@@ -1,0 +1,115 @@
+{% extends "index.html"%}
+{% block title %} User Info {% endblock %}
+
+{% block content %}
+
+<form action= "#" method = "post">
+<div class="container parent">
+    
+    <div class="row">
+        <button class="btn btn-primary btn-lg btn-block" type="submit" value="Submit" name="Mood">Search via Mood</button>
+        <div class='col text-center'>
+        <input type="radio" name="mood imgbackground" id="img1" class="d-none imgbgchk" value="energetic">
+          <label for="img1">
+            <img src="../static/images/Energetic.jpg" alt="Image 1">
+            <div class="tick_container">
+              <div class="tick"><i class="fa fa-check"></i></div>
+            </div>
+            </label>
+        </div>
+        <div class='col text-center'>
+        <input type="radio" name="mood imgbackground" id="img2" class="d-none imgbgchk" value="calm">
+          <label for="img2">
+            <img src="../static/images/Calm.jpg" alt="Image 2">
+            <div class="tick_container">
+              <div class="tick"><i class="fa fa-check"></i></div>
+            </div>
+          </label>
+        </div>
+        <div class='col text-center'>
+        <input type="radio" name="mood imgbackground" id="img3" class="d-none imgbgchk" value="happy">
+          <label for="img3">
+            <img src="../static/images/Happy.jpg" alt="Image 3">
+            <div class="tick_container">
+              <div class="tick"><i class="fa fa-check"></i></div>
+            </div>
+          </label>
+        </div>
+        <div class='col text-center'>
+        <input type="radio" name="mood imgbackground" id="img4" class="d-none imgbgchk" value="sad">
+            <label for="img4">
+              <img src="../static/images/Sad.jpg" alt="Image 4">
+              <div class="tick_container">
+                <div class="tick"><i class="fa fa-check"></i></div>
+              </div>
+            </label>
+        </div>
+        <div class='col text-center'>
+            <input type="radio" name="mood imgbackground" id="img5" class="d-none imgbgchk" value="live">
+                <label for="img5">
+                  <img src="../static/images/Live.jpg" alt="Image 5">
+                  <div class="tick_container">
+                    <div class="tick"><i class="fa fa-check"></i></div>
+                  </div>
+                </label>
+            </div>
+      </div>
+      
+    </div>
+
+</form>
+
+<style>
+    html,body{
+            min-height: 100vh;
+            min-width: 100vw;
+        }
+        .parent{
+            height: 100vh;
+        }
+        .parent>.row{
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        .col img{
+            height:100px;
+            width: 100%;
+            cursor: pointer;
+            transition: transform 1s;
+            object-fit: cover;
+        }
+        .col label{
+            overflow: hidden;
+            position: relative;
+        }
+        .imgbgchk:checked + label>.tick_container{
+            opacity: 1;
+        }
+/*         aNIMATION */
+        .imgbgchk:checked + label>img{
+            transform: scale(1.25);
+            opacity: 0.3;
+        }
+        .tick_container {
+            transition: .5s ease;
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            cursor: pointer;
+            text-align: center;
+        }
+        .tick {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            padding: 6px 12px;
+            height: 40px;
+            width: 40px;
+            border-radius: 100%;
+        }
+</style>
+{% endblock content %}

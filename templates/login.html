@@ -1,18 +1,18 @@
-{% extends "base.html"%}
+{% extends "index.html"%}
 {% block title %} Log In {% endblock %}
 
 {% block content %}
 
-<form action= "#" method = "post">
-
-    <p> Enter email id:</p>
-    <p><input type = "email" name = "email"/></p>
-    <p><input type = "submit" value = "Log in/Register"/></p>    
-    
-   
-    
-    
-    
+<form class="d-flex"  action="#" method="post">
+    <div class="container">
+        <h1>Please login</h1>
+        <br>
+          <input class="form-control me-2" type="text" placeholder="email" name="Email" value="">
+          <button class="btn btn-outline-success" type="submit" value="Login" name="Login">Login</button>
+        {% if error %}
+          <p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
+      </div>
 </form>
    
 {% endblock content %}

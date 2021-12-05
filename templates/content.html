@@ -1,16 +1,34 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 {% block title %} User Information {% endblock %}
 
 {% block content %}
 
-    <p1> {{Track}} by </p1>
-    <p1> {{Artist}} :</p1>
-    <p1> {{Uri}} </br>
-    <p1></br>
-    <p1></br>
-    <p1></br>
-    <p1> Content Based Recommendation </br>
-     {% for x in Recommendation %} 
-         <p1>{{x}}</br>
-     {% endfor %}       
+    <div class="container">
+        <div class="row row-cols-2">
+
+            <div class="col-sm-12">
+                <div class="card" style="border: 2px solid #07bc4c">
+                <center><h2> Searched Song</h2> 
+                <iframe src={{ "https://open.spotify.com/embed/track/" + found }} width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media">test</iframe>
+                </hr></br></div></center><center>
+                <h1> Similar Songs Based on your Search</h1></center></div>
+    {% for x,y in Recommendation %}
+     <div class="col-sm">
+         
+        <div class="card" style="border: 2px solid #07bc4c">
+            <center><p>{{y}}%</p></center>
+            <center><iframe src={{ "https://open.spotify.com/embed/track/" + x }} width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media">TEST</iframe></center>
+            <div class="container">
+                <form action="/favourite" method="POST">
+                <center><label for="id-of-input" class="custom-checkbox">
+                    <button type="submit" class="btn btn-outline-success" name="favourite" value={{x}}>Favourite</button>    
+                </label></center></form>
+            </div>
+          </div> 
+            
+            
+    </div>
+    {% endfor %}  
+    </div>
+</div>
 {% endblock content %}
