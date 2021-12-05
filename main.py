@@ -140,6 +140,9 @@ def profile():
     else:
         #print("TESTINGTON: ", session['Song'])
         print("PRFILETESTER", session["artist"])
+        if request.form.get("favourite"):
+            uri = request.form.get("favourite")
+            set_favourite(uri)
         return render_template("profile.html", temp = get_artist_songs(session["artist"]))
 
 @app.route("/<song>", methods=["GET", "POST"])
@@ -203,7 +206,7 @@ def set_favourite(URI):
     #list_of_str = ['Name', 'Email', 'Genres', 'Artist', 'Gender', 'Favourite']
     temp = user_info[user_info["Email"] == session["email"]].index.values[0]
     returnValue = []
-    row = []
+    #row = []
     with open("D:/Capstone/Flask_test/dataset/user_info.csv", "a") as csvFile:
         writer = csv.writer(csvFile)
         writer[temp][5] = URI
@@ -232,6 +235,8 @@ def get_mood(y,x):
         x = x[(x["liveness"] > (90*x["liveness"].max())/100)].sample(n=9)["uri"]
     #x = list(x["uri"])
     return x    
+
+
 
 if __name__ == "__main__":
     app.run(debug = True) 
