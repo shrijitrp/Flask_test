@@ -1,0 +1,18 @@
+{% extends "index.html"%}
+{% block title %} User Info {% endblock %}
+
+{% block content %}
+
+<form action= "#" method = "post">
+    
+    <p> Mood </p>
+    <input type="radio" name="mood", value="energetic">Energetic</br>
+    <input type="radio" name="mood", value="calm">Calm</br>
+    <input type="radio" name="mood", value="happy">Happy</br>
+    <input type="radio" name="mood", value="sad">Sad</br>
+    <input type="radio" name="mood", value="live">Live</br>
+    <input type="submit" value="Submit">
+        
+</form>
+   
+{% endblock content %}

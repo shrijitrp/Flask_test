@@ -18,9 +18,10 @@
             <center><p>{{y}}%</p></center>
             <center><iframe src={{ "https://open.spotify.com/embed/track/" + x }} width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media">TEST</iframe></center>
             <div class="container">
+                <form action="/favourite" method="POST">
                 <center><label for="id-of-input" class="custom-checkbox">
-                    <button class="btn btn-outline-success" name="favourite" value={{x}}>Favourite</button>    
-                </label></center>
+                    <button type="submit" class="btn btn-outline-success" name="favourite" value={{x}}>Favourite</button>    
+                </label></center></form>
             </div>
           </div> 
             

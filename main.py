@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics.pairwise import cosine_similarity
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
 sc = StandardScaler()  
 
 
@@ -53,7 +54,7 @@ def login():
         session["email"] = email
         #password = request.form["password"]
         if user_info["Email"].str.contains(email).any():# & user_info["Password"].str.contains(password).any():
-            print("Success")
+            print("Successful Login")
             return redirect(url_for("profile"))
         else: 
             return redirect(url_for("info"))        
@@ -84,6 +85,18 @@ def info():
         return redirect(url_for("profile"))
     else:
         return render_template("info.html")
+
+@app.route("/mood",methods = ["POST","GET"])
+def mood():
+    if request.method == "POST":
+        mood = request.form.getlist("mood")
+        for i in mood:
+            uri = get_mood(i, database)
+        print("MOOOOOOOOOOD",uri)
+        returnValue = render_template("mood-search.html", temp = uri)
+    else:
+        returnValue = render_template("mood.html")
+    return returnValue
 
 # @app.route("/favourite")
 # def favourite(URI):
@@ -129,16 +142,23 @@ def profile():
         print("PRFILETESTER", session["artist"])
         return render_template("profile.html", temp = get_artist_songs(session["artist"]))
 
-@app.route("/<song>", methods=['GET', 'POST'])
+@app.route("/<song>", methods=["GET", "POST"])
 def content(song):  
-    recommendation = []
-    #if song != session['Song']:
-    found = list(database[database["Tracks"] == song]["uri"])[0]
-    recommendation = get_recommendations(song)
-    #else: 
-        #song = session['Song']
-    #found = list(database[database["Tracks"] == song]["uri"])[0]
-    #recommendation = get_recommendations(song
+    if request.method == 'POST':# and Form.validate():
+        if song == "favourite":
+            song = request.form["favourite"]
+            print("THIS IS A POST SONG FAVOURITE:", song)
+            return redirect(url_for("search"))
+
+        print("THIS IS A POST SONG REQUEST:", song)
+        found = list(database[database["Tracks"] == song]["uri"])[0]
+        recommendation = get_recommendations(song) 
+        #recommendation = get_recommendations(get_song_from_uri(song)) 
+    else:
+        print("THIS IS A GET MESSAGE: ", song)
+        found = list(database[database["Tracks"] == song]["uri"])[0]
+        recommendation = get_recommendations(song)
+ 
     if recommendation:
         #session.pop(song,None)
         print("ABC: ", session['Song'])
@@ -155,6 +175,7 @@ content_similarity = cosine_similarity(content_input)
 content_similarity_df = pd.DataFrame(content_similarity,index = content_input.index,columns = content_input.index)
 
 def get_recommendations(song):
+    print("GET_RECOMMENDATOIN",song)
     id = database[database["Tracks"]== song].index.values[0]
     temp = content_similarity_df[id].sort_values(ascending = False).index.values[1:19]
     per = []
@@ -172,7 +193,11 @@ def get_artist_songs(artist):
         link.append(z)
     return link
 
-def favourite(URI):
+# def get_mood_songs(mood):
+#     return {""}
+#     return returnValue
+
+def set_favourite(URI):
     print("loaded")
     #temp2 = session[email]
     #list_of_str = ['Name', 'Email', 'Genres', 'Artist', 'Gender', 'Favourite']
@@ -191,6 +216,22 @@ def favourite(URI):
     csvFile.close()
     return returnValue
 
+def get_song_from_uri(URI):
+    return list((database[(database['uri'] == URI)])["Tracks"])[0]
+
+def get_mood(y,x):
+    if y == "calm":
+        x = x[(x["instrumentalness"] > (80*x["instrumentalness"].max())/100) & (x["acousticness"] > (80*x["acousticness"].max())/100) & (x["loudness"] < (20*x["loudness"].max())/100) & (x["liveness"] < (20*x["liveness"].max())/100) ].sample(n=9)["uri"]
+    elif y == "energetic":
+        x = x[(x["energy"] > (80*x["energy"].max())/100) & (x["tempo"] > (80*x["tempo"].max())/100) & (x["acousticness"] < (20*x["acousticness"].max())/100) & (x["liveness"] < (20*x["liveness"].max())/100)].sample(n=9)["uri"]
+    elif y == "happy":
+        x = x[(x["danceability"] > (80*x["danceability"].max())/100) & (x["valence"] > (80*x["valence"].max())/100) & (x["energy"] > (60*x["energy"].max())/100) & (x["liveness"] < (20*x["liveness"].max())/100)].sample(n=9)["uri"]
+    elif y == "sad":
+        x = x[(x["danceability"] < (20*x["danceability"].max())/100) & (x["energy"] < (20*x["valence"].max())/100) & (x["tempo"] < (30*x["energy"].max())/100) & (x["liveness"] < (20*x["liveness"].max())/100)].sample(n=9)["uri"]
+    elif y == "live":
+        x = x[(x["liveness"] > (90*x["liveness"].max())/100)].sample(n=9)["uri"]
+    #x = list(x["uri"])
+    return x    
 
 if __name__ == "__main__":
     app.run(debug = True) 
